@@ -2879,6 +2879,31 @@ static void insert_intermediate_typedefs(PetTypes *types, QualType type)
 	}
 }
 
+/* Is the array declared by "decl" annotated with "pencil_consecutive"?
+ * Only perform this check when the pencil option is set.
+ * "decl" may be NULL if it was derived from an array created by pet itself.
+ */
+bool PetScan::is_marked_consecutive(ValueDecl *decl)
+{
+	specific_attr_iterator<AnnotateAttr> begin, end, i;
+
+	if (!decl)
+		return false;
+	if (!options->pencil)
+		return false;
+
+	begin = decl->specific_attr_begin<AnnotateAttr>();
+	end = decl->specific_attr_end<AnnotateAttr>();
+	for (i = begin; i != end; ++i) {
+		string attr = (*i)->getAnnotation().str();
+
+		if (attr == "pencil_consecutive")
+			return true;
+	}
+
+	return false;
+}
+
 /* Construct and return a pet_array corresponding to the variable
  * represented by "id".
  * In particular, initialize array->extent to
@@ -2952,6 +2977,7 @@ struct pet_array *PetScan::extract_array(__isl_keep isl_id *id,
 	array->element_type = strdup(name.c_str());
 	array->element_is_record = base->isRecordType();
 	array->element_size = size_in_bytes(ast_context, base);
+	array->consecutive = is_marked_consecutive(pet_id_get_decl(id));
 
 	return array;
 }

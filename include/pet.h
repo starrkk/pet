@@ -450,6 +450,7 @@ struct pet_type {
  * exposed is set if the declared array is visible outside the scop.
  * outer is set if the type of the array elements is a record and
  * the fields of this record are represented by separate pet_array structures.
+ * consecutive is set if the array was marked __pencil_consecutive.
  */
 struct pet_array {
 	isl_set *context;
@@ -463,6 +464,7 @@ struct pet_array {
 	int declared;
 	int exposed;
 	int outer;
+	int consecutive;
 };
 
 /* This structure represents an implication on a boolean filter.

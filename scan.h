@@ -196,6 +196,7 @@ struct PetScan {
 private:
 	void set_current_stmt(clang::Stmt *stmt);
 	bool is_current_stmt_marked_independent();
+	bool is_marked_consecutive(clang::ValueDecl *decl);
 
 	void collect_declared_names();
 	void add_new_used_names(const std::set<std::string> &used_names);
