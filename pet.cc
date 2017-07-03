@@ -1106,6 +1106,8 @@ void add_predefines(Preprocessor &PP, int pencil)
 	s += "# 1 \"<pet>\" 1\n"
 	     "void __pencil_assume(int assumption);\n"
 	     "#define pencil_access(f) annotate(\"pencil_access(\" #f \")\")\n"
+	     "#define __pencil_consecutive "
+		"__attribute__((annotate(\"pencil_consecutive\")))\n"
 	     "# 1 \"<built-in>\" 2\n";
 	PP.setPredefines(s);
 }

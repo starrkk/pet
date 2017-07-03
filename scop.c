@@ -254,9 +254,10 @@ void pet_array_dump(struct pet_array *array)
 	isl_set_dump(array->context);
 	isl_set_dump(array->extent);
 	isl_set_dump(array->value_bounds);
-	fprintf(stderr, "%s%s%s\n", array->element_type,
+	fprintf(stderr, "%s%s%s%s\n", array->element_type,
 		array->element_is_record ? " element-is-record" : "",
-		array->live_out ? " live-out" : "");
+		array->live_out ? " live-out" : "",
+		array->consecutive ? " consecutive" : "");
 }
 
 /* Alloc a pet_scop structure, with extra room for information that
@@ -1197,6 +1198,8 @@ int pet_array_is_equal(struct pet_array *array1, struct pet_array *array2)
 	if (array1->exposed != array2->exposed)
 		return 0;
 	if (array1->outer != array2->outer)
+		return 0;
+	if (array1->consecutive != array2->consecutive)
 		return 0;
 
 	return 1;
